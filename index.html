@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WolfyRank | Salt4y</title>
+    
+    <link rel="icon" type="image/svg+xml" href="https://wolfy.net/static/img/assets/logo.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0d0118;
+            --panel: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+            --accent: #9d4edd;
+            --accent-glow: rgba(157, 78, 221, 0.4);
+            --success: #00ff88;
+            --text: #ffffff;
+            --text-dim: #a5a5a5;
+        }
+
+        html {
+            
+            scrollbar-gutter: stable;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 80px 20px; 
+            box-sizing: border-box;
+            background-image: radial-gradient(circle at top right, #3c096c 0%, transparent 40%),
+                              radial-gradient(circle at bottom left, #240046 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        
+        .discord-icon-hint {
+            position: fixed;
+            top: 8px; 
+            right: 45px; 
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            z-index: 101;
+            pointer-events: none;
+        }
+
+        .discord-icon-hint::before {
+            content: "";
+            width: 14px;
+            height: 14px;
+            background-image: url('https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/discord-round-black-icon.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            filter: grayscale(1) brightness(0); 
+            opacity: 0.9;
+        }
+
+        .discord-icon-hint::after {
+            content: "DISCORD :";
+            font-size: 0.6rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            color: #000000; 
+        }
+
+        .discord-profile {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            align-items: center;
+            background: var(--panel);
+            padding: 8px 16px;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(12px);
+            z-index: 100;
+            overflow: hidden; 
+        }
+
+        .discord-profile:hover {
+            border-color: var(--accent);
+            background: rgba(157, 78, 221, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .discord-profile::after {
+            content: "Mon Discord - Copier";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--accent);
+            color: white;
+            font-size: 0.6rem;
+            font-weight: 800;
+            padding: 2px 0;
+            text-align: center;
+            transform: translateY(100%);
+            transition: 0.2s;
+            opacity: 0;
+        }
+
+        .discord-profile:hover::after {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .discord-profile.copied {
+            border-color: var(--success) !important;
+            color: var(--success) !important;
+            background: rgba(0, 255, 136, 0.05) !important;
+        }
+
+        .discord-profile.copied::after {
+            content: "Copié ! ✅";
+            background: var(--success);
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .discord-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-right: 12px;
+            border: 2px solid var(--accent);
+            background-image: url('https://i.imgur.com/wfD0i2g.png'); 
+            background-size: cover;
+            background-position: center;
+        }
+
+        
+        .app-card {
+            width: 100%;
+            max-width: 460px;
+            background: var(--panel);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--border);
+            border-radius: 35px;
+            padding: 40px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+            flex-shrink: 0; 
+        }
+
+        h1 {
+            font-weight: 800;
+            font-size: 2.2rem;
+            text-align: center;
+            margin: 0 0 35px 0;
+            letter-spacing: -1.5px;
+            background: linear-gradient(to bottom, #fff, #9d4edd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .input-wrap {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1.8px;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        input {
+            width: 100%;
+            height: 58px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            color: white;
+            font-size: 1.1rem;
+            padding: 0 20px;
+            box-sizing: border-box;
+            outline: none;
+            transition: 0.3s ease;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        input:focus {
+            border-color: var(--accent);
+            background: rgba(157, 78, 221, 0.05);
+            box-shadow: 0 0 25px var(--accent-glow);
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .hint {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            margin-top: 6px;
+            font-weight: 300;
+        }
+
+        .grid-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        button {
+            width: 100%;
+            height: 62px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-top: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 30px var(--accent-glow);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            filter: brightness(1.15);
+            box-shadow: 0 15px 40px var(--accent-glow);
+        }
+
+       
+        .results-container {
+            margin-top: 15px;
+            max-height: 450px;
+            overflow-y: auto;
+            padding: 20px 10px 20px 0; 
+        }
+
+        .group-label {
+            font-size: 0.65rem;
+            font-weight: 900;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin: 30px 0 15px 0;
+            display: flex;
+            align-items: center;
+            opacity: 0.6;
+        }
+
+        .group-label::after {
+            content: "";
+            height: 1px;
+            flex-grow: 1;
+            background: linear-gradient(to right, var(--border), transparent);
+            margin-left: 15px;
+        }
+
+        .pseudo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
+            gap: 12px;
+        }
+
+        
+        .pseudo-tag {
+            position: relative;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            padding: 14px 10px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .pseudo-tag:hover {
+            border-color: var(--accent);
+            background: rgba(157, 78, 221, 0.1);
+            transform: translateY(-2px);
+            z-index: 2;
+        }
+
+        
+        .pseudo-tag::after {
+            content: "Cliquer pour copier";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--accent);
+            color: white;
+            font-size: 0.6rem;
+            font-weight: 800;
+            padding: 2px 0;
+            transform: translateY(100%);
+            transition: 0.2s;
+            opacity: 0;
+        }
+
+        .pseudo-tag:hover::after {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        
+        .pseudo-tag.copied {
+            border-color: var(--success) !important;
+            color: var(--success) !important;
+            background: rgba(0, 255, 136, 0.05) !important;
+        }
+
+        .pseudo-tag.copied::after {
+            content: "Copié ! ✅";
+            background: var(--success);
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        
+        footer {
+            margin-top: 60px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            line-height: 1.8;
+            padding-bottom: 20px; 
+        }
+
+        footer b { color: #fff; }
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="discord-icon-hint"></div>
+    <div class="discord-profile" onclick="copyText(this, 'salt4y')">
+        <div class="discord-avatar"></div>
+        <div class="discord-name">salt4y</div>
+    </div>
+
+    <div class="app-card">
+        <h1>WolfyRank</h1>
+        
+        <div class="input-wrap">
+            <label>Nom Original</label>
+            <input type="text" id="originalName" spellcheck="false" autocomplete="off">
+        </div>
+
+        <div class="grid-inputs">
+            <div class="input-wrap">
+                <label>Niveau</label>
+                <input type="number" id="targetLevel" value="7">
+                <div class="hint">Palier 1 à 7</div>
+            </div>
+            <div class="input-wrap">
+                <label>Elo</label>
+                <input type="number" id="targetElo" value="499">
+                <div class="hint">Maximum 499</div>
+            </div>
+        </div>
+
+        <button onclick="generate()">Générer les variantes</button>
+
+        <div id="resultsOutput" class="results-container"></div>
+    </div>
+
+    <footer>
+        Non affilié à <a href="https://wolfy.net" target="_blank">Wolfy.net</a><br>
+        Créé par <b>Salt4y</b>
+    </footer>
+
+    <script>
+        
+        function copyText(el, text) {
+            navigator.clipboard.writeText(text);
+            
+            
+            el.classList.add('copied');
+            
+            
+            setTimeout(() => {
+                el.classList.remove('copied');
+            }, 1500);
+        }
+
+        function generate() {
+            const name = document.getElementById('originalName').value.trim();
+            const level = parseInt(document.getElementById('targetLevel').value);
+            const elo = parseInt(document.getElementById('targetElo').value);
+            const output = document.getElementById('resultsOutput');
+            
+            if (name.length < 2) return;
+            output.innerHTML = "";
+
+            const PALIERS = [30, 80, 160, 330, 690, 1340, 2320, 3870];
+            const ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_".split('');
+            const CODES = ALPHABET.map(c => c.charCodeAt(0));
+            
+            let magicScores = [];
+            for (let s = 150; s <= 1950; s++) {
+                const seed = Math.abs(Math.sin(s));
+                const resElo = Math.floor(500 * seed);
+                const raw = Math.floor(2320 * seed);
+                const resLvl = (PALIERS.findIndex(n => raw < n) + 1) || 8;
+                
+                if (resLvl === level && resElo === elo) magicScores.push(s);
+            }
+
+            const currentScore = [...name].reduce((a, b) => a + b.charCodeAt(0), 0);
+            const categories = { "Ajustement Fin": [], "Extensions": [], "Début / Milieu": [] };
+
+            magicScores.forEach(target => {
+                const diff = target - currentScore;
+                
+                CODES.forEach(code => {
+                    if (code - name.charCodeAt(name.length - 1) === diff) 
+                        categories["Ajustement Fin"].push(name.slice(0, -1) + String.fromCharCode(code));
+                    
+                    if (code - name.charCodeAt(0) === diff) 
+                        categories["Début / Milieu"].push(String.fromCharCode(code) + name.slice(1));
+                });
+
+                if (CODES.includes(diff)) categories["Extensions"].push(name + String.fromCharCode(diff));
+            });
+
+            for (let cat in categories) {
+                const list = [...new Set(categories[cat].filter(p => p.match(/^[a-zA-Z0-9_]{4,16}$/)))].slice(0, 15);
+                if (list.length > 0) {
+                    let html = `<div class="group-label">${cat}</div><div class="pseudo-grid">`;
+                    list.forEach(p => {
+                        html += `<div class="pseudo-tag" onclick="copyText(this, '${p}')">${p}</div>`;
+                    });
+                    html += `</div></div>`;
+                    output.innerHTML += html;
+                }
+            }
+            
+            
+            if(output.innerHTML !== "") {
+                setTimeout(() => {
+                    output.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
+            }
+        }
+    </script>
+</body>
+</html>
