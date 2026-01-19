@@ -31,29 +31,37 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             min-height: 100vh;
-            padding: 80px 20px; 
+            padding: 40px 20px; 
             box-sizing: border-box;
             background-image: radial-gradient(circle at top right, #3c096c 0%, transparent 40%),
                               radial-gradient(circle at bottom left, #240046 0%, transparent 40%);
             background-attachment: fixed;
         }
 
-        .discord-icon-hint {
+        .header-section {
             position: fixed;
-            top: 10px; 
-            right: 50px; 
+            top: 25px;
+            right: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+            z-index: 100;
+        }
+
+        .discord-icon-hint {
             display: flex;
             align-items: center;
             gap: 8px;
-            z-index: 101;
-            pointer-events: none;
+            margin-right: 15px;
         }
 
         .discord-icon-hint::before {
             content: "";
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             background-image: url('https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/discord-round-black-icon.png');
             background-size: contain;
             background-repeat: no-repeat;
@@ -63,16 +71,13 @@
 
         .discord-icon-hint::after {
             content: "DISCORD :";
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 900;
             letter-spacing: 1px;
             color: white; 
         }
 
         .discord-profile {
-            position: fixed;
-            top: 25px;
-            right: 25px;
             display: flex;
             align-items: center;
             background: var(--panel);
@@ -82,8 +87,8 @@
             cursor: pointer;
             transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             backdrop-filter: blur(12px);
-            z-index: 100;
             overflow: hidden; 
+            position: relative;
         }
 
         .discord-profile:hover {
@@ -128,8 +133,8 @@
         }
 
         .discord-avatar {
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             margin-right: 12px;
             border: 2px solid var(--accent);
@@ -147,6 +152,7 @@
             border-radius: 35px;
             padding: 40px;
             box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+            box-sizing: border-box;
         }
 
         h1 {
@@ -181,24 +187,27 @@
 
         label {
             display: block;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 800;
             color: var(--accent);
             text-transform: uppercase;
-            letter-spacing: 1.8px;
+            letter-spacing: 1.2px;
             margin-bottom: 10px;
             opacity: 0.9;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         input {
             width: 100%;
-            height: 58px;
+            height: 54px;
             background: rgba(0,0,0,0.3);
             border: 1px solid var(--border);
-            border-radius: 18px;
+            border-radius: 16px;
             color: white;
-            font-size: 1.1rem;
-            padding: 0 20px;
+            font-size: 1rem;
+            padding: 0 18px;
             box-sizing: border-box;
             outline: none;
             transition: 0.3s ease;
@@ -208,7 +217,7 @@
         input:focus {
             border-color: var(--accent);
             background: rgba(157, 78, 221, 0.05);
-            box-shadow: 0 0 25px var(--accent-glow);
+            box-shadow: 0 0 20px var(--accent-glow);
         }
 
         .hint {
@@ -220,13 +229,13 @@
 
         .grid-inputs {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1.2fr;
             gap: 15px;
         }
 
         button {
             width: 100%;
-            height: 62px;
+            height: 60px;
             background: var(--accent);
             color: white;
             border: none;
@@ -301,12 +310,12 @@
         }
 
         footer {
-            margin-top: 60px;
+            margin-top: 40px;
             text-align: center;
             font-size: 0.8rem;
             color: var(--text-dim);
             line-height: 1.8;
-            padding-bottom: 40px; 
+            padding-bottom: 20px; 
         }
 
         footer a { color: var(--accent); text-decoration: none; font-weight: 600; }
@@ -317,23 +326,25 @@
 </head>
 <body>
 
-    <div class="discord-icon-hint"></div>
-    <div class="discord-profile" onclick="copyText(this, 'salt4y')">
-        <div class="discord-avatar"></div>
-        <div class="discord-name">salt4y</div>
+    <div class="header-section">
+        <div class="discord-icon-hint"></div>
+        <div class="discord-profile" onclick="copyText(this, 'salt4y')">
+            <div class="discord-avatar"></div>
+            <div class="discord-name">salt4y</div>
+        </div>
     </div>
 
     <div class="app-card">
         <h1>WolfyRank</h1>
         
         <div class="instruction-box">
-            Saisissez un ano et les statistiques souhaitées. Le moteur calculera les combinaisons ASCII nécessaires pour avoir un ano similaire disposant des bonnes statistiques. 
-            Les caractères <b>i, I, l, L</b> sont considérés comme <b>visuellement identiques</b> et ne comptent pas comme un changement.
+            Saisissez un ano et les statistiques souhaitées. Le moteur calculera les combinaisons ASCII nécessaires.
+            Les caractères <b>i, I, l, L</b> sont considérés comme <b>identiques</b> et ne comptent pas comme un changement.
         </div>
 
         <div class="input-wrap">
             <label>Ano de base</label>
-            <input type="text" id="originalName" placeholder="Ex: Eclipse" spellcheck="false">
+            <input type="text" id="originalName" spellcheck="false" autocomplete="off">
         </div>
 
         <div class="grid-inputs">
@@ -342,11 +353,11 @@
                 <input type="number" id="targetLevel" value="7" min="1" max="8">
             </div>
             <div class="input-wrap">
-                <label>Elo</label>
+                <label>Lauriers</label>
                 <input type="number" id="targetElo" value="499" min="0" max="499">
             </div>
             <div class="input-wrap">
-                <label>Combien de changements de caractères</label>
+                <label>Changements max</label>
                 <input type="number" id="maxChanges" value="2" min="1" max="5">
             </div>
         </div>
@@ -408,12 +419,9 @@
             }
 
             const baseScore = [...name].reduce((a, b) => a + b.charCodeAt(0), 0);
-            const found = new Set();
             const categories = { "Variantes Proches": [], "Autres Combinaisons": [] };
 
             targetScores.forEach(target => {
-                const diff = target - baseScore;
-
                 for (let i = 0; i < name.length; i++) {
                     const charCode = name.charCodeAt(i);
                     CODES.forEach(code => {
@@ -425,10 +433,11 @@
                 }
 
                 if (maxDiffAllowed >= 2) {
-                    for (let i = 0; i < 300; i++) {
+                    for (let i = 0; i < 400; i++) {
                         let tempName = name.split('');
                         let idx1 = Math.floor(Math.random() * tempName.length);
                         let idx2 = Math.floor(Math.random() * tempName.length);
+                        while(idx1 === idx2) idx2 = Math.floor(Math.random() * tempName.length);
                         
                         let char1 = CODES[Math.floor(Math.random() * CODES.length)];
                         tempName[idx1] = String.fromCharCode(char1);
@@ -460,7 +469,7 @@
             }
 
             if (output.innerHTML === "") {
-                output.innerHTML = "<div class='hint' style='text-align:center; padding:20px;'>Aucun pseudo trouvé. Essayez d'augmenter la Diff. Max.</div>";
+                output.innerHTML = "<div class='hint' style='text-align:center; padding:20px;'>Aucun résultat. Essayez d'augmenter le nombre de changements.</div>";
             }
         }
     </script>
