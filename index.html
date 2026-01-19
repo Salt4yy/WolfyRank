@@ -19,21 +19,23 @@
             --text-dim: #a5a5a5;
         }
 
-        html, body {
-            height: 100%;
-            margin: 0;
-            overflow: hidden;
-        }
+        html { scrollbar-gutter: stable; }
 
         body {
             font-family: 'Outfit', sans-serif;
             background-color: var(--bg);
             color: var(--text);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px 20px; 
+            box-sizing: border-box;
             background-image: radial-gradient(circle at top right, #3c096c 0%, transparent 40%),
                               radial-gradient(circle at bottom left, #240046 0%, transparent 40%);
             background-attachment: fixed;
-            display: flex;
-            flex-direction: column;
         }
 
         .header-section {
@@ -44,7 +46,7 @@
             flex-direction: column;
             align-items: flex-end;
             gap: 8px;
-            z-index: 1000;
+            z-index: 100;
         }
 
         .discord-icon-hint {
@@ -95,174 +97,215 @@
 
         .discord-profile::after {
             content: "Copier l'identifiant";
-            position: absolute; bottom: 0; left: 0; width: 100%;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
             background: var(--accent);
-            color: white; font-size: 0.6rem; font-weight: 800;
-            padding: 2px 0; text-align: center;
-            transform: translateY(100%); transition: 0.2s; opacity: 0;
+            color: white;
+            font-size: 0.6rem;
+            font-weight: 800;
+            padding: 2px 0;
+            text-align: center;
+            transform: translateY(100%);
+            transition: 0.2s;
+            opacity: 0;
         }
 
-        .discord-profile:hover::after { transform: translateY(0); opacity: 1; }
+        .discord-profile:hover::after {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .discord-profile.copied {
+            border-color: var(--success) !important;
+            color: var(--success) !important;
+        }
 
         .discord-avatar {
-            width: 28px; height: 28px; border-radius: 50%;
-            margin-right: 12px; border: 2px solid var(--accent);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            margin-right: 12px;
+            border: 2px solid var(--accent);
             background-image: url('https://i.imgur.com/wfD0i2g.png'); 
-            background-size: cover; background-position: center;
+            background-size: cover;
+            background-position: center;
         }
 
-        .main-wrapper {
-            display: flex;
-            flex: 1;
-            align-items: center;
-            padding: 0 50px;
-            gap: 30px;
-            overflow-x: auto;
-            scrollbar-width: none;
-        }
-
-        .main-wrapper::-webkit-scrollbar { display: none; }
-
-        .card {
+        .app-card {
+            width: 100%;
+            max-width: 520px;
             background: var(--panel);
             backdrop-filter: blur(25px);
             border: 1px solid var(--border);
             border-radius: 35px;
             padding: 40px;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
-            height: 600px;
-            display: flex;
-            flex-direction: column;
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            opacity: 0;
-            transform: translateX(-50px);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+            box-sizing: border-box;
         }
-
-        .card.visible {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .input-card { width: 420px; flex-shrink: 0; opacity: 1; transform: none; }
-
-        .elo-card { width: 380px; flex-shrink: 0; }
-
-        .results-card { width: 600px; flex-shrink: 0; }
 
         h1 {
-            font-weight: 800; font-size: 2.2rem; text-align: center;
-            margin: 0 0 20px 0; letter-spacing: -1.5px;
+            font-weight: 800;
+            font-size: 2.2rem;
+            text-align: center;
+            margin: 0 0 10px 0;
+            letter-spacing: -1.5px;
             background: linear-gradient(to bottom, #fff, #9d4edd);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .instruction-box {
             background: rgba(157, 78, 221, 0.08);
             border: 1px dashed var(--border);
             border-radius: 15px;
-            padding: 15px; margin-bottom: 25px;
-            font-size: 0.8rem; line-height: 1.5; color: var(--text-dim);
+            padding: 15px;
+            margin-bottom: 30px;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: var(--text-dim);
         }
 
-        .input-wrap { margin-bottom: 20px; }
+        .input-wrap { margin-bottom: 25px; }
 
         label {
-            display: block; font-size: 0.65rem; font-weight: 800;
-            color: var(--accent); text-transform: uppercase;
-            letter-spacing: 1.2px; margin-bottom: 8px;
+            display: block;
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin-bottom: 10px;
+            opacity: 0.9;
         }
 
         input {
-            width: 100%; height: 54px; background: rgba(0,0,0,0.3);
-            border: 1px solid var(--border); border-radius: 16px;
-            color: white; font-size: 1rem; padding: 0 18px; box-sizing: border-box;
-            outline: none; transition: 0.3s; font-family: 'Outfit', sans-serif;
+            width: 100%;
+            height: 54px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            color: white;
+            font-size: 1rem;
+            padding: 0 18px;
+            box-sizing: border-box;
+            outline: none;
+            transition: 0.3s ease;
+            font-family: 'Outfit', sans-serif;
         }
 
-        input:focus { border-color: var(--accent); box-shadow: 0 0 20px var(--accent-glow); }
-
-        button.main-btn {
-            width: 100%; height: 60px; background: var(--accent);
-            color: white; border: none; border-radius: 20px;
-            font-size: 1rem; font-weight: 800; cursor: pointer;
-            transition: 0.3s; text-transform: uppercase; letter-spacing: 1px;
-            box-shadow: 0 10px 30px var(--accent-glow); margin-top: auto;
+        input:focus {
+            border-color: var(--accent);
+            background: rgba(157, 78, 221, 0.05);
+            box-shadow: 0 0 20px var(--accent-glow);
         }
 
-        button.main-btn:hover { transform: translateY(-3px); filter: brightness(1.15); }
+        .grid-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1.2fr;
+            gap: 15px;
+        }
 
-        .scroll-area {
-            flex: 1;
+        button {
+            width: 100%;
+            height: 60px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-top: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 30px var(--accent-glow);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            filter: brightness(1.15);
+        }
+
+        .copy-hint {
+            display: none;
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: var(--success);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .results-container {
+            margin-top: 10px;
+            max-height: 400px;
             overflow-y: auto;
             padding-right: 10px;
         }
 
-        .level-row {
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 15px;
+        .group-label {
+            font-size: 0.65rem;
+            font-weight: 900;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin: 20px 0 12px 0;
+            display: flex;
+            align-items: center;
         }
 
-        .level-tag {
-            font-size: 0.7rem; font-weight: 900; color: var(--accent);
-            text-transform: uppercase; margin-bottom: 10px; display: block;
-        }
-
-        .elo-grid {
-            display: flex; flex-wrap: wrap; gap: 8px;
-        }
-
-        .elo-pill {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            color: var(--text-dim);
-            padding: 8px 12px; border-radius: 12px;
-            cursor: pointer; font-size: 0.8rem; font-weight: 800;
-            transition: 0.2s;
-        }
-
-        .elo-pill:hover, .elo-pill.active {
-            border-color: var(--accent); color: white; background: rgba(157, 78, 221, 0.2);
-        }
-
-        .pseudo-group-label {
-            font-size: 0.65rem; font-weight: 900; color: var(--accent);
-            text-transform: uppercase; margin: 25px 0 12px 0;
-            display: flex; align-items: center;
-        }
-
-        .pseudo-group-label::after {
-            content: ""; height: 1px; flex-grow: 1;
+        .group-label::after {
+            content: "";
+            height: 1px;
+            flex-grow: 1;
             background: linear-gradient(to right, var(--border), transparent);
             margin-left: 15px;
         }
 
         .pseudo-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
             gap: 10px;
         }
 
         .pseudo-tag {
-            background: rgba(255,255,255,0.04); border: 1px solid var(--border);
-            padding: 12px 8px; border-radius: 12px; font-size: 0.9rem;
-            text-align: center; cursor: pointer; transition: 0.2s;
+            position: relative;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            padding: 12px 8px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            overflow: hidden;
             font-family: 'Fira Code', monospace;
+            letter-spacing: -0.5px;
         }
 
-        .pseudo-tag:hover { border-color: var(--accent); background: rgba(157, 78, 221, 0.1); }
-        .pseudo-tag.copied { border-color: var(--success) !important; color: var(--success) !important; }
+        .pseudo-tag:hover {
+            border-color: var(--accent);
+            background: rgba(157, 78, 221, 0.1);
+        }
 
-        .copy-banner {
-            font-size: 0.6rem; font-weight: 800; color: var(--success);
-            text-transform: uppercase; text-align: center; margin-bottom: 10px;
-            letter-spacing: 1px;
+        .pseudo-tag.copied {
+            border-color: var(--success) !important;
+            color: var(--success) !important;
         }
 
         footer {
-            position: fixed; bottom: 0; width: 100%;
-            text-align: center; font-size: 0.8rem; color: var(--text-dim);
-            padding: 20px 0; background: linear-gradient(transparent, var(--bg));
+            margin-top: 40px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            line-height: 1.8;
+            padding-bottom: 20px; 
         }
+
+        footer b { color: #fff; }
 
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
@@ -278,179 +321,182 @@
         </div>
     </div>
 
-    <div class="main-wrapper">
-        <div class="card input-card">
-            <h1>WolfyRank</h1>
-            <div class="instruction-box">
-                Entrez un ano. Nous trouverons tous les anos similaires avec des statistiques précises.
+    <div class="app-card">
+        <h1>WolfyRank</h1>
+        
+        <div class="instruction-box">
+            Saisissez votre ano. Le moteur générera des anos similaires avec les statistiques demandées.
+        </div>
+
+        <div class="input-wrap">
+            <label>Ano de base</label>
+            <input type="text" id="originalName" spellcheck="false" autocomplete="off">
+        </div>
+
+        <div class="grid-inputs">
+            <div class="input-wrap">
+                <label>Niveau</label>
+                <input type="number" id="targetLevel" value="7" min="1" max="8">
             </div>
             <div class="input-wrap">
-                <label>Ano de base</label>
-                <input type="text" id="originalName" spellcheck="false" autocomplete="off">
+                <label>Lauriers</label>
+                <input type="number" id="targetElo" value="499" min="0" max="499">
             </div>
-            <button class="main-btn" onclick="searchPossibleElos()">Générer les possibilités</button>
+            <div class="input-wrap">
+                <label>Changements</label>
+                <input type="number" id="maxChanges" value="2" min="1" max="5">
+            </div>
         </div>
 
-        <div id="eloCard" class="card elo-card">
-            <h1>Lauriers disponibles</h1>
-            <div class="scroll-area" id="eloList"></div>
-        </div>
+        <button onclick="generate()">Générer les pseudos</button>
 
-        <div id="resultsCard" class="card results-card">
-            <div class="copy-banner">Cliquez pour copier</div>
-            <div class="scroll-area" id="pseudoList"></div>
-        </div>
+        <div id="copyHint" class="copy-hint">Cliquez sur un pseudo pour le copier</div>
+        <div id="resultsOutput" class="results-container"></div>
     </div>
 
     <footer>
         Non affilié à <b>Wolfy.net</b><br>
         Créé par <b>Salt4y</b>
+        </b>Projet en cours 🚧</b>
     </footer>
 
     <script>
-        const PALIERS = [30, 80, 160, 330, 690, 1340, 2320, 3870];
-        const ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_".split('');
-        const CODES = ALPHABET.map(c => c.charCodeAt(0));
-        const simChars = ['i', 'I', 'l', 'L'];
-
         function copyText(el, text) {
             navigator.clipboard.writeText(text);
             el.classList.add('copied');
             setTimeout(() => el.classList.remove('copied'), 1500);
         }
 
-        function getVisualChanges(s1, s2) {
-            let diff = 0;
-            const len = Math.max(s1.length, s2.length);
-            for(let i=0; i<len; i++) {
-                if(s1[i] === s2[i]) continue;
-                if(simChars.includes(s1[i]) && simChars.includes(s2[i])) continue;
-                diff++;
+        function getVisualChanges(str1, str2) {
+            let changes = 0;
+            const maxLen = Math.max(str1.length, str2.length);
+            const similar = ['i', 'l', 'I', 'L'];
+            for (let i = 0; i < maxLen; i++) {
+                const c1 = str1[i] || "";
+                const c2 = str2[i] || "";
+                if (c1 === c2) continue;
+                if (similar.includes(c1) && similar.includes(c2)) continue;
+                changes++;
             }
-            return diff;
+            return changes;
         }
 
-        function searchPossibleElos() {
+        function generate() {
             const name = document.getElementById('originalName').value.trim();
-            if(name.length < 2) return;
-
-            const eloCard = document.getElementById('eloCard');
-            const resCard = document.getElementById('resultsCard');
-            const list = document.getElementById('eloList');
+            const level = parseInt(document.getElementById('targetLevel').value);
+            const elo = parseInt(document.getElementById('targetElo').value);
+            const maxDiff = parseInt(document.getElementById('maxChanges').value);
+            const output = document.getElementById('resultsOutput');
+            const hint = document.getElementById('copyHint');
             
-            resCard.classList.remove('visible');
-            list.innerHTML = "";
+            if (name.length < 2) return;
+            output.innerHTML = "";
+            hint.style.display = "none";
 
-            const baseScore = [...name].reduce((a,b) => a + b.charCodeAt(0), 0);
-            const found = {};
-
-            for(let s = 100; s <= 2500; s++) {
-                if(Math.abs(s - baseScore) > 160) continue;
+            const PALIERS = [30, 80, 160, 330, 690, 1340, 2320, 3870];
+            const ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_".split('');
+            const CODES = ALPHABET.map(c => c.charCodeAt(0));
+            const simChars = ['i', 'I', 'l', 'L'];
+            
+            let targetScores = [];
+            for (let s = 100; s <= 2500; s++) {
                 const seed = Math.abs(Math.sin(s));
-                const lvl = (PALIERS.findIndex(p => Math.floor(2320 * seed) < p) + 1) || 8;
-                if(lvl > 7) continue;
-                const elo = Math.floor(500 * seed);
-                if(!found[lvl]) found[lvl] = {};
-                found[lvl][elo] = s;
+                const resElo = Math.floor(500 * seed);
+                const raw = Math.floor(2320 * seed);
+                const resLvl = (PALIERS.findIndex(n => raw < n) + 1) || 8;
+                if (resLvl === level && resElo === elo) targetScores.push(s);
             }
 
-            Object.keys(found).sort().forEach(lvl => {
-                const row = document.createElement('div');
-                row.className = 'level-row';
-                row.innerHTML = `<span class="level-tag">Niveau ${lvl}</span>`;
-                const grid = document.createElement('div');
-                grid.className = 'elo-grid';
-                Object.keys(found[lvl]).sort((a,b) => a-b).forEach(elo => {
-                    const pill = document.createElement('div');
-                    pill.className = 'elo-pill';
-                    pill.innerText = `${elo} Elo`;
-                    pill.onclick = () => {
-                        document.querySelectorAll('.elo-pill').forEach(p => p.classList.remove('active'));
-                        pill.classList.add('active');
-                        showPseudos(name, found[lvl][elo]);
-                    };
-                    grid.appendChild(pill);
-                });
-                row.appendChild(grid);
-                list.appendChild(row);
-            });
-
-            eloCard.classList.add('visible');
-        }
-
-        function showPseudos(name, target) {
-            const resCard = document.getElementById('resultsCard');
-            const list = document.getElementById('pseudoList');
-            list.innerHTML = "";
-
-            const cats = {
-                "Même Apparence": new Set(),
-                "Changement Proche": new Set(),
+            const categories = {
+                "Même Apparence (i/I/l/L)": new Set(),
+                "Début (Pos 1)": new Set(),
+                "Fin (Dernier)": new Set(),
+                "Insertion Début": new Set(),
+                "Insertion Fin": new Set(),
                 "Transformations": new Set()
             };
 
-            const baseSum = [...name].reduce((a,b) => a + b.charCodeAt(0), 0);
-
-            function add(p) {
-                if(p === name || p.length < 3 || p.length > 16) return;
-                if([...p].reduce((a,b) => a + b.charCodeAt(0), 0) !== target) return;
-                const d = getVisualChanges(name, p);
-                if(d === 0) cats["Même Apparence"].add(p);
-                else if(d === 1) cats["Changement Proche"].add(p);
-                else if(d <= 2) cats["Transformations"].add(p);
+            for(let i=1; i < name.length - 1; i++) {
+                categories[`Milieu (Pos ${i+1})`] = new Set();
             }
 
-            function simRec(curr, i) {
-                if(i === name.length) { add(curr); return; }
-                if(simChars.includes(name[i])) simChars.forEach(c => simRec(curr+c, i+1));
-                else simRec(curr+name[i], i+1);
-            }
-            simRec("", 0);
+            targetScores.forEach(target => {
+                function findIosVariations(str, targetScore) {
+                    const indices = [];
+                    for(let k=0; k<str.length; k++) if(simChars.includes(str[k])) indices.push(k);
+                    if(indices.length === 0) return;
 
-            CODES.forEach(c => {
-                const char = String.fromCharCode(c);
-                for(let i=0; i<name.length; i++) {
-                    add(name.substring(0, i) + char + name.substring(i+1));
+                    const combinations = Math.pow(4, indices.length);
+                    const maxCombos = Math.min(combinations, 256);
+                    
+                    for(let c=0; c < maxCombos; c++) {
+                        let temp = str.split('');
+                        let currentCombo = c;
+                        for(let b=0; b < indices.length; b++) {
+                            temp[indices[b]] = simChars[currentCombo % 4];
+                            currentCombo = Math.floor(currentCombo / 4);
+                        }
+                        const vName = temp.join('');
+                        if([...vName].reduce((a, b) => a + b.charCodeAt(0), 0) === targetScore) {
+                            categories["Même Apparence (i/I/l/L)"].add(vName);
+                        }
+                    }
                 }
-                add(char + name);
-                add(name + char);
+                findIosVariations(name, target);
+
+                CODES.forEach(c => {
+                    const char = String.fromCharCode(c);
+                    const check = (p, cat) => {
+                        if(p === name || p.length < 3 || p.length > 16) return;
+                        if([...p].reduce((a, b) => a + b.charCodeAt(0), 0) === target) {
+                            if(getVisualChanges(name, p) <= maxDiff) categories[cat].add(p);
+                        }
+                    };
+
+                    check(char + name.slice(1), "Début (Pos 1)");
+                    check(name.slice(0, -1) + char, "Fin (Dernier)");
+                    check(char + name, "Insertion Début");
+                    check(name + char, "Insertion Fin");
+
+                    for (let i = 1; i < name.length - 1; i++) {
+                        check(name.substring(0, i) + char + name.substring(i + 1), `Milieu (Pos ${i+1})`);
+                    }
+                });
+
+                if (maxDiff >= 2) {
+                    const baseSum = [...name].reduce((a, b) => a + b.charCodeAt(0), 0);
+                    for (let i = 0; i < 400; i++) {
+                        let temp = name.split('');
+                        let r1 = Math.floor(Math.random() * temp.length);
+                        let r2 = Math.floor(Math.random() * temp.length);
+                        while(r1 === r2) r2 = Math.floor(Math.random() * temp.length);
+                        temp[r1] = String.fromCharCode(CODES[Math.floor(Math.random() * CODES.length)]);
+                        let now = temp.reduce((a, b) => a + b.charCodeAt(0), 0);
+                        let need = target - now + temp[r2].charCodeAt(0);
+                        if (CODES.includes(need)) {
+                            temp[r2] = String.fromCharCode(need);
+                            const final = temp.join('');
+                            if(getVisualChanges(name, final) <= maxDiff && final !== name) {
+                                categories["Transformations"].add(final);
+                            }
+                        }
+                    }
+                }
             });
 
-            for(let i=0; i<400; i++) {
-                let t = name.split('');
-                let r1 = Math.floor(Math.random()*t.length);
-                let r2 = Math.floor(Math.random()*t.length);
-                if(r1 === r2) continue;
-                t[r1] = String.fromCharCode(CODES[Math.floor(Math.random()*CODES.length)]);
-                let cur = t.reduce((a,b) => a + b.charCodeAt(0), 0);
-                let need = target - cur + t[r2].charCodeAt(0);
-                if(CODES.includes(need)) {
-                    t[r2] = String.fromCharCode(need);
-                    add(t.join(''));
-                }
-            }
-
-            Object.keys(cats).forEach(title => {
-                const items = [...cats[title]].slice(0, 30);
-                if(items.length > 0) {
-                    const label = document.createElement('div');
-                    label.className = 'pseudo-group-label';
-                    label.innerText = title;
-                    const grid = document.createElement('div');
-                    grid.className = 'pseudo-grid';
-                    items.forEach(p => {
-                        const tag = document.createElement('div');
-                        tag.className = 'pseudo-tag';
-                        tag.innerText = p;
-                        tag.onclick = () => copyText(tag, p);
-                        grid.appendChild(tag);
-                    });
-                    list.appendChild(label);
-                    list.appendChild(grid);
+            let any = false;
+            Object.keys(categories).forEach(title => {
+                const results = [...categories[title]].slice(0, 24);
+                if (results.length > 0) {
+                    any = true;
+                    let html = `<div class="group-label">${title}</div><div class="pseudo-grid">`;
+                    results.forEach(p => html += `<div class="pseudo-tag" onclick="copyText(this, '${p}')">${p}</div>`);
+                    output.innerHTML += html + `</div>`;
                 }
             });
 
-            resCard.classList.add('visible');
+            if (any) hint.style.display = "block";
+            else output.innerHTML = "<div class='hint' style='text-align:center; padding:20px;'>Aucun résultat. Essayez d'ajuster les paramètres.</div>";
         }
     </script>
 </body>
