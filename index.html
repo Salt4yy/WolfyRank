@@ -20,7 +20,6 @@
         }
 
         html {
-            
             scrollbar-gutter: stable;
         }
 
@@ -40,35 +39,34 @@
             background-attachment: fixed;
         }
 
-        
         .discord-icon-hint {
             position: fixed;
-            top: 8px; 
-            right: 45px; 
+            top: 10px; 
+            right: 50px; 
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             z-index: 101;
             pointer-events: none;
         }
 
         .discord-icon-hint::before {
             content: "";
-            width: 14px;
-            height: 14px;
+            width: 20px;
+            height: 20px;
             background-image: url('https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/discord-round-black-icon.png');
             background-size: contain;
             background-repeat: no-repeat;
-            filter: grayscale(1) brightness(0); 
+            filter: invert(1);
             opacity: 0.9;
         }
 
         .discord-icon-hint::after {
             content: "DISCORD :";
-            font-size: 0.6rem;
+            font-size: 0.75rem;
             font-weight: 900;
             letter-spacing: 1px;
-            color: #000000; 
+            color: white; 
         }
 
         .discord-profile {
@@ -95,7 +93,7 @@
         }
 
         .discord-profile::after {
-            content: "Mon Discord - Copier";
+            content: "Copier l'identifiant";
             position: absolute;
             bottom: 0;
             left: 0;
@@ -140,28 +138,41 @@
             background-position: center;
         }
 
-        
         .app-card {
             width: 100%;
-            max-width: 460px;
+            max-width: 500px;
             background: var(--panel);
             backdrop-filter: blur(25px);
             border: 1px solid var(--border);
             border-radius: 35px;
             padding: 40px;
             box-shadow: 0 40px 100px rgba(0,0,0,0.6);
-            flex-shrink: 0; 
         }
 
         h1 {
             font-weight: 800;
             font-size: 2.2rem;
             text-align: center;
-            margin: 0 0 35px 0;
+            margin: 0 0 10px 0;
             letter-spacing: -1.5px;
             background: linear-gradient(to bottom, #fff, #9d4edd);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+        }
+
+        .instruction-box {
+            background: rgba(157, 78, 221, 0.08);
+            border: 1px dashed var(--border);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 30px;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: var(--text-dim);
+        }
+
+        .instruction-box b {
+            color: var(--accent);
         }
 
         .input-wrap {
@@ -200,12 +211,6 @@
             box-shadow: 0 0 25px var(--accent-glow);
         }
 
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
         .hint {
             font-size: 0.7rem;
             color: var(--text-dim);
@@ -215,8 +220,8 @@
 
         .grid-inputs {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
         }
 
         button {
@@ -239,15 +244,13 @@
         button:hover {
             transform: translateY(-3px);
             filter: brightness(1.15);
-            box-shadow: 0 15px 40px var(--accent-glow);
         }
 
-       
         .results-container {
-            margin-top: 15px;
-            max-height: 450px;
+            margin-top: 25px;
+            max-height: 400px;
             overflow-y: auto;
-            padding: 20px 10px 20px 0; 
+            padding-right: 10px;
         }
 
         .group-label {
@@ -255,10 +258,9 @@
             font-weight: 900;
             color: var(--accent);
             text-transform: uppercase;
-            margin: 30px 0 15px 0;
+            margin: 25px 0 12px 0;
             display: flex;
             align-items: center;
-            opacity: 0.6;
         }
 
         .group-label::after {
@@ -271,88 +273,46 @@
 
         .pseudo-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
-            gap: 12px;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 10px;
         }
 
-        
         .pseudo-tag {
             position: relative;
             background: rgba(255,255,255,0.04);
             border: 1px solid var(--border);
-            padding: 14px 10px;
-            border-radius: 15px;
+            padding: 12px 8px;
+            border-radius: 12px;
             font-size: 0.85rem;
             text-align: center;
             cursor: pointer;
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            white-space: nowrap;
+            transition: 0.2s;
             overflow: hidden;
-            text-overflow: ellipsis;
         }
 
         .pseudo-tag:hover {
             border-color: var(--accent);
             background: rgba(157, 78, 221, 0.1);
-            transform: translateY(-2px);
-            z-index: 2;
         }
 
-        
-        .pseudo-tag::after {
-            content: "Cliquer pour copier";
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: var(--accent);
-            color: white;
-            font-size: 0.6rem;
-            font-weight: 800;
-            padding: 2px 0;
-            transform: translateY(100%);
-            transition: 0.2s;
-            opacity: 0;
-        }
-
-        .pseudo-tag:hover::after {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        
         .pseudo-tag.copied {
             border-color: var(--success) !important;
             color: var(--success) !important;
-            background: rgba(0, 255, 136, 0.05) !important;
         }
 
-        .pseudo-tag.copied::after {
-            content: "Copié ! ✅";
-            background: var(--success);
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        
         footer {
             margin-top: 60px;
             text-align: center;
             font-size: 0.8rem;
             color: var(--text-dim);
             line-height: 1.8;
-            padding-bottom: 20px; 
+            padding-bottom: 40px; 
         }
 
-        footer b { color: #fff; }
-        footer a {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 600;
-        }
+        footer a { color: var(--accent); text-decoration: none; font-weight: 600; }
 
         ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -366,52 +326,68 @@
     <div class="app-card">
         <h1>WolfyRank</h1>
         
+        <div class="instruction-box">
+            Saisissez un ano et les statistiques souhaitées. Le moteur calculera les combinaisons ASCII nécessaires pour avoir un ano similaire disposant des bonnes statistiques. 
+            Les caractères <b>i, I, l, L</b> sont considérés comme <b>visuellement identiques</b> et ne comptent pas comme un changement.
+        </div>
+
         <div class="input-wrap">
-            <label>Nom Original</label>
-            <input type="text" id="originalName" spellcheck="false" autocomplete="off">
+            <label>Ano de base</label>
+            <input type="text" id="originalName" placeholder="Ex: Eclipse" spellcheck="false">
         </div>
 
         <div class="grid-inputs">
             <div class="input-wrap">
                 <label>Niveau</label>
-                <input type="number" id="targetLevel" value="7">
-                <div class="hint">Palier 1 à 7</div>
+                <input type="number" id="targetLevel" value="7" min="1" max="8">
             </div>
             <div class="input-wrap">
                 <label>Elo</label>
-                <input type="number" id="targetElo" value="499">
-                <div class="hint">Maximum 499</div>
+                <input type="number" id="targetElo" value="499" min="0" max="499">
+            </div>
+            <div class="input-wrap">
+                <label>Combien de changements de caractères</label>
+                <input type="number" id="maxChanges" value="2" min="1" max="5">
             </div>
         </div>
 
-        <button onclick="generate()">Générer les variantes</button>
+        <button onclick="generate()">Générer les pseudos</button>
 
         <div id="resultsOutput" class="results-container"></div>
     </div>
 
     <footer>
-        Non affilié à <a href="https://wolfy.net" target="_blank">Wolfy.net</a><br>
+        Outil indépendant non-affilié à <a href="https://wolfy.net" target="_blank">Wolfy.net</a><br>
         Créé par <b>Salt4y</b>
     </footer>
 
     <script>
-        
         function copyText(el, text) {
             navigator.clipboard.writeText(text);
-            
-            
             el.classList.add('copied');
-            
-            
-            setTimeout(() => {
-                el.classList.remove('copied');
-            }, 1500);
+            setTimeout(() => el.classList.remove('copied'), 1500);
+        }
+
+        function getVisualChanges(str1, str2) {
+            let changes = 0;
+            const maxLen = Math.max(str1.length, str2.length);
+            const similar = ['i', 'l', 'I', 'L'];
+
+            for (let i = 0; i < maxLen; i++) {
+                const c1 = str1[i] || "";
+                const c2 = str2[i] || "";
+                if (c1 === c2) continue;
+                if (similar.includes(c1) && similar.includes(c2)) continue;
+                changes++;
+            }
+            return changes;
         }
 
         function generate() {
             const name = document.getElementById('originalName').value.trim();
             const level = parseInt(document.getElementById('targetLevel').value);
             const elo = parseInt(document.getElementById('targetElo').value);
+            const maxDiffAllowed = parseInt(document.getElementById('maxChanges').value);
             const output = document.getElementById('resultsOutput');
             
             if (name.length < 2) return;
@@ -421,50 +397,70 @@
             const ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_".split('');
             const CODES = ALPHABET.map(c => c.charCodeAt(0));
             
-            let magicScores = [];
-            for (let s = 150; s <= 1950; s++) {
+            let targetScores = [];
+            for (let s = 150; s <= 2200; s++) {
                 const seed = Math.abs(Math.sin(s));
                 const resElo = Math.floor(500 * seed);
                 const raw = Math.floor(2320 * seed);
                 const resLvl = (PALIERS.findIndex(n => raw < n) + 1) || 8;
                 
-                if (resLvl === level && resElo === elo) magicScores.push(s);
+                if (resLvl === level && resElo === elo) targetScores.push(s);
             }
 
-            const currentScore = [...name].reduce((a, b) => a + b.charCodeAt(0), 0);
-            const categories = { "Ajustement Fin": [], "Extensions": [], "Début / Milieu": [] };
+            const baseScore = [...name].reduce((a, b) => a + b.charCodeAt(0), 0);
+            const found = new Set();
+            const categories = { "Variantes Proches": [], "Autres Combinaisons": [] };
 
-            magicScores.forEach(target => {
-                const diff = target - currentScore;
-                
-                CODES.forEach(code => {
-                    if (code - name.charCodeAt(name.length - 1) === diff) 
-                        categories["Ajustement Fin"].push(name.slice(0, -1) + String.fromCharCode(code));
-                    
-                    if (code - name.charCodeAt(0) === diff) 
-                        categories["Début / Milieu"].push(String.fromCharCode(code) + name.slice(1));
-                });
+            targetScores.forEach(target => {
+                const diff = target - baseScore;
 
-                if (CODES.includes(diff)) categories["Extensions"].push(name + String.fromCharCode(diff));
+                for (let i = 0; i < name.length; i++) {
+                    const charCode = name.charCodeAt(i);
+                    CODES.forEach(code => {
+                        const newName = name.substring(0, i) + String.fromCharCode(code) + name.substring(i + 1);
+                        if (getVisualChanges(name, newName) <= maxDiffAllowed && (baseScore - charCode + code) === target) {
+                            categories["Variantes Proches"].push(newName);
+                        }
+                    });
+                }
+
+                if (maxDiffAllowed >= 2) {
+                    for (let i = 0; i < 300; i++) {
+                        let tempName = name.split('');
+                        let idx1 = Math.floor(Math.random() * tempName.length);
+                        let idx2 = Math.floor(Math.random() * tempName.length);
+                        
+                        let char1 = CODES[Math.floor(Math.random() * CODES.length)];
+                        tempName[idx1] = String.fromCharCode(char1);
+                        
+                        let currentSum = tempName.reduce((a, b) => a + b.charCodeAt(0), 0);
+                        let needed = target - currentSum + tempName[idx2].charCodeAt(0);
+                        
+                        if (CODES.includes(needed)) {
+                            tempName[idx2] = String.fromCharCode(needed);
+                            const final = tempName.join('');
+                            if (getVisualChanges(name, final) <= maxDiffAllowed) {
+                                categories["Autres Combinaisons"].push(final);
+                            }
+                        }
+                    }
+                }
             });
 
             for (let cat in categories) {
-                const list = [...new Set(categories[cat].filter(p => p.match(/^[a-zA-Z0-9_]{4,16}$/)))].slice(0, 15);
+                const list = [...new Set(categories[cat].filter(p => p.match(/^[a-zA-Z0-9_]{3,16}$/) && p !== name))].slice(0, 24);
                 if (list.length > 0) {
                     let html = `<div class="group-label">${cat}</div><div class="pseudo-grid">`;
                     list.forEach(p => {
                         html += `<div class="pseudo-tag" onclick="copyText(this, '${p}')">${p}</div>`;
                     });
-                    html += `</div></div>`;
+                    html += `</div>`;
                     output.innerHTML += html;
                 }
             }
-            
-            
-            if(output.innerHTML !== "") {
-                setTimeout(() => {
-                    output.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }, 100);
+
+            if (output.innerHTML === "") {
+                output.innerHTML = "<div class='hint' style='text-align:center; padding:20px;'>Aucun pseudo trouvé. Essayez d'augmenter la Diff. Max.</div>";
             }
         }
     </script>
