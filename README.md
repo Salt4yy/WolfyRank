@@ -1,2 +1,2 @@
 # WolfyRank
-Générateur d'anonyme wolfy disponible sur https://salt4yy.github.io/WolfyRank
+Générateur d'anonyme Wolfy disponible sur https://salt4yy.github.io/WolfyRank
