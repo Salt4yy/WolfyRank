@@ -1,503 +1,638 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WolfyRank | Salt4y</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WolfyRank</title>
+<link rel="icon" type="image/svg+xml" href="https://wolfy.net/static/img/assets/logo.svg">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg: #0d0118;
+        --panel: rgba(255, 255, 255, 0.03);
+        --panel-hover: rgba(255, 255, 255, 0.06);
+        --border: rgba(255, 255, 255, 0.08);
+        --accent: #9d4edd;
+        --accent-glow: rgba(157, 78, 221, 0.4);
+        --success: #00ff88;
+        --text: #ffffff;
+        --text-dim: #a5a5a5;
+    }
+
+    html { scrollbar-gutter: stable; }
+
+    body {
+        font-family: 'Outfit', sans-serif;
+        background-color: var(--bg);
+        color: var(--text);
+        margin: 0;
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+        background-image: radial-gradient(circle at top right, #3c096c 0%, transparent 40%),
+                          radial-gradient(circle at bottom left, #240046 0%, transparent 40%);
+    }
+
     
-    <link rel="icon" type="image/svg+xml" href="https://wolfy.net/static/img/assets/logo.svg">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #0d0118;
-            --panel: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.08);
-            --accent: #9d4edd;
-            --accent-glow: rgba(157, 78, 221, 0.4);
-            --success: #00ff88;
-            --text: #ffffff;
-            --text-dim: #a5a5a5;
-        }
+    .main-container {
+        display: grid;
+        grid-template-columns: 320px 1fr 1fr; 
+        width: 100%;
+        height: 100%;
+    }
 
-        html { scrollbar-gutter: stable; }
+    
+    .sidebar {
+        background: rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(20px);
+        border-right: 1px solid var(--border);
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        z-index: 10;
+    }
 
-        body {
-            font-family: 'Outfit', sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 40px 20px; 
-            box-sizing: border-box;
-            background-image: radial-gradient(circle at top right, #3c096c 0%, transparent 40%),
-                              radial-gradient(circle at bottom left, #240046 0%, transparent 40%);
-            background-attachment: fixed;
-        }
+    h1 {
+        font-weight: 800;
+        font-size: 1.8rem;
+        margin: 0;
+        background: linear-gradient(to bottom, #fff, #9d4edd);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: -1px;
+    }
 
-        .header-section {
-            position: fixed;
-            top: 25px;
-            right: 25px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 8px;
-            z-index: 100;
-        }
+    .input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
 
-        .discord-icon-hint {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-right: 15px;
-        }
+    label {
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: var(--accent);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
 
-        .discord-icon-hint::before {
-            content: "";
-            width: 18px;
-            height: 18px;
-            background-image: url('https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/discord-round-black-icon.png');
-            background-size: contain;
-            background-repeat: no-repeat;
-            filter: invert(1);
-            opacity: 0.9;
-        }
+    input {
+        width: 100%;
+        height: 50px;
+        background: rgba(0,0,0,0.3);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        color: white;
+        font-size: 1rem;
+        padding: 0 15px;
+        box-sizing: border-box;
+        outline: none;
+        font-family: 'Fira Code', monospace;
+        transition: 0.3s;
+    }
 
-        .discord-icon-hint::after {
-            content: "DISCORD :";
-            font-size: 0.7rem;
-            font-weight: 900;
-            letter-spacing: 1px;
-            color: white; 
-        }
+    input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 15px var(--accent-glow);
+    }
 
-        .discord-profile {
-            display: flex;
-            align-items: center;
-            background: var(--panel);
-            padding: 8px 16px;
-            border-radius: 50px;
-            border: 1px solid var(--border);
-            cursor: pointer;
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(12px);
-            overflow: hidden; 
-            position: relative;
-        }
+    button {
+        height: 55px;
+        background: var(--accent);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 0.9rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-top: 10px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
 
-        .discord-profile:hover {
-            border-color: var(--accent);
-            background: rgba(157, 78, 221, 0.15);
-            transform: translateY(-2px);
-        }
+    button:hover { transform: translateY(-2px); filter: brightness(1.1); }
+    button:active { transform: translateY(0); }
 
-        .discord-profile::after {
-            content: "Copier l'identifiant";
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: var(--accent);
-            color: white;
-            font-size: 0.6rem;
-            font-weight: 800;
-            padding: 2px 0;
-            text-align: center;
-            transform: translateY(100%);
-            transition: 0.2s;
-            opacity: 0;
-        }
+    .sidebar-footer {
+        margin-top: auto;
+        font-size: 0.75rem;
+        color: var(--text-dim);
+        text-align: center;
+    }
 
-        .discord-profile:hover::after {
-            transform: translateY(0);
-            opacity: 1;
-        }
+    
+    .grid-panel {
+        padding: 30px;
+        overflow-y: auto;
+        border-right: 1px solid var(--border);
+    }
 
-        .discord-profile.copied {
-            border-color: var(--success) !important;
-            color: var(--success) !important;
-        }
+    .grid-header {
+        margin-bottom: 20px;
+    }
+    
+    .grid-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 5px; }
+    .grid-subtitle { font-size: 0.8rem; color: var(--text-dim); }
 
-        .discord-avatar {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            margin-right: 12px;
-            border: 2px solid var(--accent);
-            background-image: url('https://i.imgur.com/wfD0i2g.png'); 
-            background-size: cover;
-            background-position: center;
-        }
+    .level-group {
+        margin-bottom: 25px;
+        animation: fadeIn 0.5s ease forwards;
+    }
 
-        .app-card {
-            width: 100%;
-            max-width: 520px;
-            background: var(--panel);
-            backdrop-filter: blur(25px);
-            border: 1px solid var(--border);
-            border-radius: 35px;
-            padding: 40px;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.6);
-            box-sizing: border-box;
-        }
+    .level-title {
+        font-size: 0.9rem;
+        font-weight: 800;
+        color: white;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .level-badge {
+        background: var(--accent);
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.7rem;
+    }
 
-        h1 {
-            font-weight: 800;
-            font-size: 2.2rem;
-            text-align: center;
-            margin: 0 0 10px 0;
-            letter-spacing: -1.5px;
-            background: linear-gradient(to bottom, #fff, #9d4edd);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+    .elo-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
 
-        .instruction-box {
-            background: rgba(157, 78, 221, 0.08);
-            border: 1px dashed var(--border);
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 30px;
-            font-size: 0.85rem;
-            line-height: 1.5;
-            color: var(--text-dim);
-        }
+    .elo-box {
+        width: 50px;
+        height: 50px;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Fira Code', monospace;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        position: relative;
+    }
 
-        .input-wrap { margin-bottom: 25px; }
+    .elo-box:hover {
+        background: var(--panel-hover);
+        border-color: var(--accent);
+        transform: translateY(-2px);
+    }
 
-        label {
-            display: block;
-            font-size: 0.65rem;
-            font-weight: 800;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            margin-bottom: 10px;
-            opacity: 0.9;
-        }
+    .elo-box.active {
+        background: var(--accent);
+        color: white;
+        border-color: var(--accent);
+        box-shadow: 0 0 15px var(--accent-glow);
+    }
 
-        input {
-            width: 100%;
-            height: 54px;
-            background: rgba(0,0,0,0.3);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            color: white;
-            font-size: 1rem;
-            padding: 0 18px;
-            box-sizing: border-box;
-            outline: none;
-            transition: 0.3s ease;
-            font-family: 'Outfit', sans-serif;
-        }
+    .elo-count {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: #ff4757;
+        color: white;
+        font-size: 0.6rem;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid var(--bg);
+    }
 
-        input:focus {
-            border-color: var(--accent);
-            background: rgba(157, 78, 221, 0.05);
-            box-shadow: 0 0 20px var(--accent-glow);
-        }
+    
+    .results-panel {
+        padding: 30px;
+        background: rgba(0,0,0,0.1);
+        overflow-y: auto;
+        position: relative;
+    }
+.card-label {
+        font-size: 0.75rem;
+        font-weight: 800;
+        color: var(--accent);
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        margin-left: 5px;
+    }
+    .base-stats-card {
+        background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(157, 78, 221, 0.1) 100%);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 20px;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-        .grid-inputs {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1.2fr;
-            gap: 15px;
-        }
+    .stat-item { text-align: center; }
+    .stat-val { font-size: 1.5rem; font-weight: 800; font-family: 'Fira Code', monospace; color: var(--success); }
+    .stat-lbl { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
 
-        button {
-            width: 100%;
-            height: 60px;
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 20px;
-            font-size: 1rem;
-            font-weight: 800;
-            cursor: pointer;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            margin-top: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 10px 30px var(--accent-glow);
-        }
+    .list-header {
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: var(--text-dim);
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 10px;
+    }
 
-        button:hover {
-            transform: translateY(-3px);
-            filter: brightness(1.15);
-        }
+    .pseudo-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
 
-        .copy-hint {
-            display: none;
-            font-size: 0.65rem;
-            font-weight: 800;
-            color: var(--success);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 25px;
-            text-align: center;
-        }
+    .pseudo-item {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        padding: 15px;
+        border-radius: 12px;
+        font-family: 'Fira Code', monospace;
+        cursor: pointer;
+        transition: 0.2s;
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-        .results-container {
-            margin-top: 10px;
-            max-height: 400px;
-            overflow-y: auto;
-            padding-right: 10px;
-        }
+    .pseudo-item:hover {
+        border-color: var(--accent);
+        background: rgba(157, 78, 221, 0.05);
+    }
 
-        .group-label {
-            font-size: 0.65rem;
-            font-weight: 900;
-            color: var(--accent);
-            text-transform: uppercase;
-            margin: 20px 0 12px 0;
-            display: flex;
-            align-items: center;
-        }
+    
+    .tooltip-box {
+        position: absolute;
+        bottom: -30px;
+        left: 50%;
+        transform: translateX(-50%) translateY(10px);
+        background: #fff;
+        color: #000;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 0.7rem;
+        font-weight: 800;
+        opacity: 0;
+        visibility: hidden;
+        transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        pointer-events: none;
+        white-space: nowrap;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
 
-        .group-label::after {
-            content: "";
-            height: 1px;
-            flex-grow: 1;
-            background: linear-gradient(to right, var(--border), transparent);
-            margin-left: 15px;
-        }
+    .tooltip-box::before {
+        content: '';
+        position: absolute;
+        top: -4px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+        border-bottom: 4px solid #fff;
+    }
 
-        .pseudo-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            gap: 10px;
-        }
+    .pseudo-item:hover .tooltip-box {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+    }
 
-        .pseudo-tag {
-            position: relative;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid var(--border);
-            padding: 12px 8px;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.2s;
-            overflow: hidden;
-            font-family: 'Fira Code', monospace;
-            letter-spacing: -0.5px;
-        }
+    .pseudo-item.copied .tooltip-box {
+        background: var(--success);
+        color: #000;
+    }
+    .pseudo-item.copied .tooltip-box::before { border-bottom-color: var(--success); }
 
-        .pseudo-tag:hover {
-            border-color: var(--accent);
-            background: rgba(157, 78, 221, 0.1);
-        }
+    .loader {
+        display: none;
+        border: 3px solid rgba(255,255,255,0.1);
+        border-top: 3px solid var(--accent);
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+    }
 
-        .pseudo-tag.copied {
-            border-color: var(--success) !important;
-            color: var(--success) !important;
-        }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        footer {
-            margin-top: 40px;
-            text-align: center;
-            font-size: 0.8rem;
-            color: var(--text-dim);
-            line-height: 1.8;
-            padding-bottom: 20px; 
-        }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
 
-        footer b { color: #fff; }
-
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
-    </style>
+</style>
 </head>
 <body>
 
-    <div class="header-section">
-        <div class="discord-icon-hint"></div>
-        <div class="discord-profile" onclick="copyText(this, 'salt4y')">
-            <div class="discord-avatar"></div>
-            <div class="discord-name">salt4y</div>
-        </div>
-    </div>
-
-    <div class="app-card">
+<div class="main-container">
+    
+    <aside class="sidebar">
         <h1>WolfyRank</h1>
         
-        <div class="instruction-box">
-            Saisissez votre ano. Le moteur générera des anos similaires avec les statistiques demandées.
+        <div class="input-group">
+            <label>Pseudo de base</label>
+            <input type="text" id="baseName" placeholder="Ex: salt4y" autocomplete="off" spellcheck="false">
         </div>
 
-        <div class="input-wrap">
-            <label>Ano de base</label>
-            <input type="text" id="originalName" spellcheck="false" autocomplete="off">
+        <div class="input-group">
+            <label>Max Changements</label>
+            <input type="number" id="maxChanges" value="1" min="1" max="3">
+            <div style="font-size:0.65rem; color:var(--text-dim);">1 changement max recommandé (maximum 3)</div>
         </div>
 
-        <div class="grid-inputs">
-            <div class="input-wrap">
-                <label>Niveau</label>
-                <input type="number" id="targetLevel" value="7" min="1" max="8">
+        <button onclick="startGeneration()">Générer</button>
+        <div id="loader" class="loader"></div>
+
+        <div class="sidebar-footer">
+            Par Salt4y <br>Non affilié à Wolfy.net
+        </div>
+    </aside>
+
+    
+    <section class="grid-panel" id="gridPanel">
+        <div class="grid-header">
+            <div class="grid-title">Tableau des Élos</div>
+            <div class="grid-subtitle">Cliquez sur une case pour voir les pseudos</div>
+        </div>
+        <div id="gridOutput">
+           
+            <div style="color:var(--text-dim); text-align:center; margin-top:50px;">
+                Entrez un pseudo et cliquez sur Générer pour voir les cases disponibles.
             </div>
-            <div class="input-wrap">
-                <label>Lauriers</label>
-                <input type="number" id="targetElo" value="499" min="0" max="499">
+        </div>
+    </section>
+
+   
+    <section class="results-panel">
+        <section class="results-panel">
+        
+        
+        <div class="card-label">Statistiques du pseudo de base</div>
+        
+
+        <div class="base-stats-card" id="baseStatsCard" style="opacity:0">
+            <div class="stat-item">
+                <div class="stat-val" id="baseLvl">-</div>
+                <div class="stat-lbl">Niveau</div>
             </div>
-            <div class="input-wrap">
-                <label>Changements</label>
-                <input type="number" id="maxChanges" value="2" min="1" max="5">
+            <div style="width:1px; height:30px; background:var(--border);"></div>
+            <div class="stat-item">
+                <div class="stat-val" id="baseElo">-</div>
+                <div class="stat-lbl">Élo</div>
             </div>
         </div>
 
-        <button onclick="generate()">Générer les pseudos</button>
+        <!-- La suite du code... -->
+        <div class="base-stats-card" id="baseStatsCard" style="opacity:0">
+            <div class="stat-item">
+                <div class="stat-val" id="baseLvl">-</div>
+                <div class="stat-lbl">Niveau</div>
+            </div>
+            <div style="width:1px; height:30px; background:var(--border);"></div>
+            <div class="stat-item">
+                <div class="stat-val" id="baseElo">-</div>
+                <div class="stat-lbl">Élo</div>
+            </div>
+        </div>
 
-        <div id="copyHint" class="copy-hint">Cliquez sur un pseudo pour le copier</div>
-        <div id="resultsOutput" class="results-container"></div>
-    </div>
+        <div class="list-header" id="listHeader">Pseudos sélectionnés</div>
+        <div class="pseudo-list" id="namesList">
+            <div style="color:var(--text-dim); font-size:0.9rem;">
+                Aucun élo sélectionné.
+            </div>
+        </div>
+    </section>
+</div>
 
-    <footer>
-        Non affilié à <b>Wolfy.net</b><br>
-        Créé par <b>Salt4y</b><br>
-        </b>Projet en cours 🚧</b>
-    </footer>
+<script>
+    
 
-    <script>
-        function copyText(el, text) {
-            navigator.clipboard.writeText(text);
-            el.classList.add('copied');
-            setTimeout(() => el.classList.remove('copied'), 1500);
-        }
+    const PALIERS = [30, 80, 160, 330, 690, 1340, 2320, 3870];
+    const ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_".split('');
+    
+    let GLOBAL_DATA = {};
 
-        function getVisualChanges(str1, str2) {
-            let changes = 0;
-            const maxLen = Math.max(str1.length, str2.length);
-            const similar = ['i', 'l', 'I', 'L'];
-            for (let i = 0; i < maxLen; i++) {
-                const c1 = str1[i] || "";
-                const c2 = str2[i] || "";
-                if (c1 === c2) continue;
-                if (similar.includes(c1) && similar.includes(c2)) continue;
-                changes++;
+    function calculateWolfyStats(name) {
+        let sum = 0;
+        for(let i=0; i<name.length; i++) sum += name.charCodeAt(i);
+        
+        const seed = Math.abs(Math.sin(sum));
+        const elo = Math.floor(500 * seed);
+        const rawPoints = Math.floor(2320 * seed);
+        
+        let lvl = 8; 
+        for(let i=0; i<PALIERS.length; i++) {
+            if(rawPoints < PALIERS[i]) {
+                lvl = i + 1;
+                break;
             }
-            return changes;
         }
+        return { elo, lvl };
+    }
 
-        function generate() {
-            const name = document.getElementById('originalName').value.trim();
-            const level = parseInt(document.getElementById('targetLevel').value);
-            const elo = parseInt(document.getElementById('targetElo').value);
-            const maxDiff = parseInt(document.getElementById('maxChanges').value);
-            const output = document.getElementById('resultsOutput');
-            const hint = document.getElementById('copyHint');
-            
-            if (name.length < 2) return;
-            output.innerHTML = "";
-            hint.style.display = "none";
+    
+    function getVariations(base, maxDepth) {
+        let results = new Set();
+        results.add(base);
+        
+        
+        
+        let currentSet = new Set([base]);
 
-            const PALIERS = [30, 80, 160, 330, 690, 1340, 2320, 3870];
-            const ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_".split('');
-            const CODES = ALPHABET.map(c => c.charCodeAt(0));
-            const simChars = ['i', 'I', 'l', 'L'];
+        for(let d=0; d<maxDepth; d++) {
+            let nextSet = new Set();
             
-            let targetScores = [];
-            for (let s = 100; s <= 2500; s++) {
-                const seed = Math.abs(Math.sin(s));
-                const resElo = Math.floor(500 * seed);
-                const raw = Math.floor(2320 * seed);
-                const resLvl = (PALIERS.findIndex(n => raw < n) + 1) || 8;
-                if (resLvl === level && resElo === elo) targetScores.push(s);
+            for(let str of currentSet) {
+                if(str.length > 16 || str.length < 3) continue;
+
+                
+                for(let i=0; i<str.length; i++) {
+                    for(let char of ALPHABET) {
+                        if(char !== str[i]) nextSet.add(str.substring(0, i) + char + str.substring(i+1));
+                    }
+                }
+                
+                if(str.length < 16) {
+                    for(let i=0; i<=str.length; i++) {
+                        for(let char of ALPHABET) {
+                            nextSet.add(str.substring(0, i) + char + str.substring(i));
+                        }
+                    }
+                }
+               
+                if(str.length > 3) {
+                    for(let i=0; i<str.length; i++) {
+                        nextSet.add(str.substring(0, i) + str.substring(i+1));
+                    }
+                }
+            }
+            
+            
+            for(let s of nextSet) {
+                if(!results.has(s)) {
+                    results.add(s);
+                    currentSet.add(s); 
+                }
             }
 
-            const categories = {
-                "Même Apparence (i/I/l/L)": new Set(),
-                "Début (Pos 1)": new Set(),
-                "Fin (Dernier)": new Set(),
-                "Insertion Début": new Set(),
-                "Insertion Fin": new Set(),
-                "Transformations": new Set()
+            
+            if(results.size > 20000) break; 
+        }
+        return results;
+    }
+
+    async function startGeneration() {
+        const base = document.getElementById('baseName').value.trim();
+        const maxChanges = parseInt(document.getElementById('maxChanges').value) || 1;
+        const loader = document.getElementById('loader');
+        
+        if(base.length < 2) return alert("Pseudo trop court");
+
+        
+        loader.style.display = 'block';
+        document.getElementById('gridOutput').innerHTML = '';
+        document.getElementById('namesList').innerHTML = '<div style="color:var(--text-dim)">Calcul en cours...</div>';
+
+        
+        const baseStats = calculateWolfyStats(base);
+        document.getElementById('baseLvl').innerText = baseStats.lvl;
+        document.getElementById('baseElo').innerText = baseStats.elo;
+        document.getElementById('baseStatsCard').style.opacity = 1;
+
+        
+        await new Promise(r => setTimeout(r, 100));
+
+        
+        const variations = getVariations(base, maxChanges);
+        GLOBAL_DATA = {};
+
+        variations.forEach(name => {
+            const s = calculateWolfyStats(name);
+            if(!GLOBAL_DATA[s.lvl]) GLOBAL_DATA[s.lvl] = {};
+            if(!GLOBAL_DATA[s.lvl][s.elo]) GLOBAL_DATA[s.lvl][s.elo] = [];
+            GLOBAL_DATA[s.lvl][s.elo].push(name);
+        });
+
+        renderGrid();
+        loader.style.display = 'none';
+        document.getElementById('namesList').innerHTML = '<div style="color:var(--text-dim)">Sélectionnez un élo dans la grille.</div>';
+    }
+
+    function renderGrid() {
+        const container = document.getElementById('gridOutput');
+        container.innerHTML = "";
+        
+        
+        const levels = Object.keys(GLOBAL_DATA).map(Number).sort((a,b) => a - b);
+
+        levels.forEach(lvl => {
+            const group = document.createElement('div');
+            group.className = 'level-group';
+            
+            const title = document.createElement('div');
+            title.className = 'level-title';
+            title.innerHTML = `Niveau ${lvl}`;
+            group.appendChild(title);
+
+            const eloContainer = document.createElement('div');
+            eloContainer.className = 'elo-container';
+
+            
+            const elos = Object.keys(GLOBAL_DATA[lvl]).map(Number).sort((a,b) => a - b);
+
+            elos.forEach(elo => {
+                const box = document.createElement('div');
+                box.className = 'elo-box';
+                box.textContent = elo;
+                
+                
+                const count = GLOBAL_DATA[lvl][elo].length;
+                const badge = document.createElement('div');
+                badge.className = 'elo-count';
+                badge.textContent = count > 99 ? '99+' : count;
+                box.appendChild(badge);
+
+                box.onclick = () => showNames(lvl, elo, box);
+                eloContainer.appendChild(box);
+            });
+
+            group.appendChild(eloContainer);
+            container.appendChild(group);
+        });
+    }
+
+    function showNames(lvl, elo, element) {
+        
+        document.querySelectorAll('.elo-box').forEach(b => b.classList.remove('active'));
+        element.classList.add('active');
+
+        const listContainer = document.getElementById('namesList');
+        const header = document.getElementById('listHeader');
+        
+        header.innerHTML = `Pseudos pour Niveau <span style="color:var(--accent)">${lvl}</span> • Élo <span style="color:var(--success)">${elo}</span>`;
+        listContainer.innerHTML = "";
+
+        const names = GLOBAL_DATA[lvl][elo];
+        
+        
+        names.sort((a,b) => a.length - b.length || a.localeCompare(b));
+
+        names.forEach(name => {
+            const item = document.createElement('div');
+            item.className = 'pseudo-item';
+            
+        
+            const text = document.createElement('span');
+            text.textContent = name;
+            
+            
+            const base = document.getElementById('baseName').value;
+            const isBase = name === base;
+            
+            item.appendChild(text);
+
+            
+            const tooltip = document.createElement('div');
+            tooltip.className = 'tooltip-box';
+            tooltip.textContent = 'Copier';
+            item.appendChild(tooltip);
+
+            if(isBase) {
+                item.style.borderColor = 'var(--success)';
+                item.style.background = 'rgba(0, 255, 136, 0.05)';
+            }
+
+            item.onclick = () => {
+                navigator.clipboard.writeText(name);
+                item.classList.add('copied');
+                tooltip.textContent = 'Copié !';
+                setTimeout(() => {
+                    item.classList.remove('copied');
+                    tooltip.textContent = 'Copier';
+                }, 1500);
             };
 
-            for(let i=1; i < name.length - 1; i++) {
-                categories[`Milieu (Pos ${i+1})`] = new Set();
-            }
-
-            targetScores.forEach(target => {
-                function findIosVariations(str, targetScore) {
-                    const indices = [];
-                    for(let k=0; k<str.length; k++) if(simChars.includes(str[k])) indices.push(k);
-                    if(indices.length === 0) return;
-
-                    const combinations = Math.pow(4, indices.length);
-                    const maxCombos = Math.min(combinations, 256);
-                    
-                    for(let c=0; c < maxCombos; c++) {
-                        let temp = str.split('');
-                        let currentCombo = c;
-                        for(let b=0; b < indices.length; b++) {
-                            temp[indices[b]] = simChars[currentCombo % 4];
-                            currentCombo = Math.floor(currentCombo / 4);
-                        }
-                        const vName = temp.join('');
-                        if([...vName].reduce((a, b) => a + b.charCodeAt(0), 0) === targetScore) {
-                            categories["Même Apparence (i/I/l/L)"].add(vName);
-                        }
-                    }
-                }
-                findIosVariations(name, target);
-
-                CODES.forEach(c => {
-                    const char = String.fromCharCode(c);
-                    const check = (p, cat) => {
-                        if(p === name || p.length < 3 || p.length > 16) return;
-                        if([...p].reduce((a, b) => a + b.charCodeAt(0), 0) === target) {
-                            if(getVisualChanges(name, p) <= maxDiff) categories[cat].add(p);
-                        }
-                    };
-
-                    check(char + name.slice(1), "Début (Pos 1)");
-                    check(name.slice(0, -1) + char, "Fin (Dernier)");
-                    check(char + name, "Insertion Début");
-                    check(name + char, "Insertion Fin");
-
-                    for (let i = 1; i < name.length - 1; i++) {
-                        check(name.substring(0, i) + char + name.substring(i + 1), `Milieu (Pos ${i+1})`);
-                    }
-                });
-
-                if (maxDiff >= 2) {
-                    const baseSum = [...name].reduce((a, b) => a + b.charCodeAt(0), 0);
-                    for (let i = 0; i < 400; i++) {
-                        let temp = name.split('');
-                        let r1 = Math.floor(Math.random() * temp.length);
-                        let r2 = Math.floor(Math.random() * temp.length);
-                        while(r1 === r2) r2 = Math.floor(Math.random() * temp.length);
-                        temp[r1] = String.fromCharCode(CODES[Math.floor(Math.random() * CODES.length)]);
-                        let now = temp.reduce((a, b) => a + b.charCodeAt(0), 0);
-                        let need = target - now + temp[r2].charCodeAt(0);
-                        if (CODES.includes(need)) {
-                            temp[r2] = String.fromCharCode(need);
-                            const final = temp.join('');
-                            if(getVisualChanges(name, final) <= maxDiff && final !== name) {
-                                categories["Transformations"].add(final);
-                            }
-                        }
-                    }
-                }
-            });
-
-            let any = false;
-            Object.keys(categories).forEach(title => {
-                const results = [...categories[title]].slice(0, 24);
-                if (results.length > 0) {
-                    any = true;
-                    let html = `<div class="group-label">${title}</div><div class="pseudo-grid">`;
-                    results.forEach(p => html += `<div class="pseudo-tag" onclick="copyText(this, '${p}')">${p}</div>`);
-                    output.innerHTML += html + `</div>`;
-                }
-            });
-
-            if (any) hint.style.display = "block";
-            else output.innerHTML = "<div class='hint' style='text-align:center; padding:20px;'>Aucun résultat. Essayez d'ajuster les paramètres.</div>";
-        }
-    </script>
+            listContainer.appendChild(item);
+        });
+    }
+</script>
 </body>
 </html>
